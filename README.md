@@ -74,13 +74,13 @@ you already know this function. You only need the id of the object
 	var object = Storage.getObject("Bean");
 	alert(object.id);
 	
-	//load all objects of a type, returned an array
+	//load all objects of a type and returned them as an array
 	var ar = Storage.getAllObjects("Bean");
 ```
 
 The "getObject" function loads the object with the given id, if you pass an id as a second paramter. If an object with this id exists, the function returns the stored object, else if it creates a new object. 
 
-> Notice: If there is not object with this id. The new returned object has probably another id as the given id.
+> Notice: If there is no object with this id, the new returned object has probably another id as the given id.
 
 # Delete objects
 ```javascript
