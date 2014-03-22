@@ -17,10 +17,10 @@ Just store the changes. And only load all objects if it is neccessary.
 
 #  Start with an object
 
-To work with Storage.js it is neccessary to allocate an object first! But you also can use "storeObjectsAs" to save your allready existing objects, see further down.
+To work with Storage.js it is neccessary to allocate an object first with "getObject". You need to define an type of the object. For example "Bean". But you also can use "storeObjectsAs" to save your already existing objects, see further down.
 
 ```javascript
-	var object = Storage.getObject("nameOfYourBean");
+	var object = Storage.getObject("Bean");
 ```
 This object automatically  has three values:
 
@@ -28,14 +28,14 @@ This object automatically  has three values:
 2. class
 3. exists (is true, if it is loaded/saved object)
 
-The id is the the unique key for this object, with this class. The class attribute is a string with the name of the class. In this example "nameOfYourBean"
+The id is the the unique key for this object, with this class. The class attribute is a string with the name of the class. In this example "Bean"
 
-# Add something
+### Add something
 
-Then you can add attributes and store the object again.
+You can add attributes and store the object again.
 
 ```javascript
-	var object = Storage.getObject("nameOfYourBean");
+	var object = Storage.getObject("Bean");
 	object.myvalue = "this is my new value";
 	object.andAnother =123;
 ```
@@ -47,19 +47,19 @@ just :
 	Storage.storeObject(object);
 	
 	//multiple
-	var a = Storage.getObject("myBean");
-	var b = Storage.getObject("myBean");
+	var a = Storage.getObject("Bean");
+	var b = Storage.getObject("Bean");
 	Storage.storeObjects([a,b]);
 ```
 
-## Store your allready existing objects
-if you allreay have a object, and you can't allocate them, use "storeObjectsAs". The object will be stored automatically and every object gets the id and the classtype.
+## Store your already existing objects
+if you already have objects, and you can't allocate them, use "storeObjectsAs". The objects will be stored automatically and every object gets the id and the classtype.
 
 ```javascript
-	//object which allready exists
+	//object which already exists
 	var firstOne = {name:"blub"};
 	var secondOne = {name:"blub"};
-	Storage.storeObjectsAs([firstOne,secondOne],"miscStuff");
+	Storage.storeObjectsAs([firstOne,secondOne],"Bean");
 ```
 > Notice: Make sure your object has no id or class attribute!
 
@@ -68,14 +68,14 @@ if you allreay have a object, and you can't allocate them, use "storeObjectsAs".
 you already know this function. You only need the id of the object
 
 ```javascript
-	var object = Storage.getObject("myBean",0);
+	var object = Storage.getObject("Bean",0);
 	
 	//remember: you find the id of an object in itself
-	var object = Storage.getObject("myBean");
+	var object = Storage.getObject("Bean");
 	alert(object.id);
 	
 	//load all objects of a type, returned an array
-	var ar = Storage.getAllObjects("myBean");
+	var ar = Storage.getAllObjects("Bean");
 ```
 
 The "getObject" function loads the object with the given id, if you pass an id as a second paramter. If an object with this id exists, the function returns the stored object, else if it creates a new object. 
@@ -85,7 +85,7 @@ The "getObject" function loads the object with the given id, if you pass an id a
 # Delete objects
 ```javascript
 
-    var object = Storage.getObject("sample");
+    var object = Storage.getObject("Bean");
 	Storage.storeObject(object);
 	//delete object
 	Storage.deleteObject(object);
@@ -94,7 +94,7 @@ The "getObject" function loads the object with the given id, if you pass an id a
 	Storage.deleteObjects([object2,object3]);
 	
 	//delete all objects of a type
-	Storage.deleteAllObjects("sample");
+	Storage.deleteAllObjects("Bean");
 ```
 
 # Relate objects
