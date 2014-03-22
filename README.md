@@ -6,9 +6,9 @@ Storage.js is a small Class that enables you to store objects in the browsers lo
 # Why?
 
 If you create a webapplication that is using a lot of datas, sometime its good to save data locally. But WebSql Database and IndexedDB  are not realy good supported in different browsers.
-The best support has the [webstorage see this Link](http://www.html5rocks.com/de/features/storage). So I decided to create a small framework were I can relate objects , and save Images (and files in the near future).
+The best support has the [webstorage see this Link](http://www.html5rocks.com/de/features/storage). So I decided to create a small framework were I can relate objects , and save Images (and files in the near future). It's human readable and easy to understand. You can compress it to 2kb size.
 
-Storage.js has no search or query function. Javascript is fast, and you can load all object quickly and iterate them by Javascript. Should'nt be a problem.  However, I plan to implement a small "Where" query function, but it is not ready yet.
+Storage.js has no search or query function. Javascript is fast, however you can load all object quickly and iterate them by Javascript. Should'nt be a problem.  However, I plan to implement a small "Where" query function, but it is not ready yet.
 
 
 

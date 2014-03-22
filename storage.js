@@ -1,4 +1,8 @@
-// JavaScript Document
+/****
+
+Storage.js by Simon Schweizer is licensed under a Creative Commons Attribution - Share Alike 4.0 International License.
+To view a copy of this license, visit http://creativecommons.org/licenses/by-sa/4.0/.
+**/
 var Storage =  function () {
 	var keyExist = function (id, keys)
 	{
@@ -201,7 +205,19 @@ var Storage =  function () {
 				
 		}
 		,
-		
+        getAllObjects: function (className)
+        {
+            var keys = Storage.loadRaw(className+"_keys");
+            var ids  = keys.split(",");
+            var ar = new Array();
+            for (var p =0 ; p<ids.length ; p++){
+                var id = ids[p];
+                var obj =  Storage.getObject(classname,id);
+                ar.push(obj);
+            }
+            return ar;
+        }
+		,
 
 		storeObject : function (obj)
 		{
@@ -252,7 +268,15 @@ var Storage =  function () {
             }
 		}
         ,
-        deleteAllObject:function (classname)
+         deleteObjects:function(ar)
+        {
+            for (var a = 0; a < ar.length ; a++)
+            {
+                Storage.deleteObject(ar[a]);
+            }
+        }
+        ,	
+        deleteAllObjects:function (classname)
         {
             var keys = Storage.loadRaw(Classname+"_keys");
             var ids  = keys.split(",");
@@ -319,6 +343,14 @@ var Storage =  function () {
 		
 		}
 		,
+        getRelatedObject: function (obj,className)
+        {
+            var ar  = getRelatedObjects(obj,className);
+            if(ar.length >0)
+                return ar[0];
+            return null;
+        }
+        ,   
 		getRelatedObjects: function (obj,className)
 		{
 			var beanName = getObjectName(obj);
