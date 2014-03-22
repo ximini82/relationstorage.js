@@ -1,7 +1,7 @@
 Storage.js
 ==========
 
-Storage.js is a small Class that enables you to store objects in the browsers locale storage. You can relate objects to each other.
+Storage.js is a small Class that enables you to store objects in the browsers locale storage and create Relations from object to each other. So you can create 1:1 1:n and n:m relations.
 
 # Why?
 
@@ -47,8 +47,8 @@ just :
 	var a = Storage.getObject("myBean");
 	var b = Storage.getObject("myBean");
 	Storage.storeObjects([a,b]);
-	
 ```
+
 # how to load an object? easy ;)
 you already know this function. You only need the id of the object
 
@@ -56,16 +56,16 @@ you already know this function. You only need the id of the object
 	var object = Storage.getObject("myBean",0);
 	
 	//remember: you find the id of an object in itself
-	var object = Storage.getObject("sample");
+	var object = Storage.getObject("myBean");
 	alert(object.id);
 	
 	//load all objects of a type, returned an array
-	var ar = Storage.getAllObjects("sample");
+	var ar = Storage.getAllObjects("myBean");
 ```
 
-The "getObject" function loads the object, if you pass an id as a second paramter. If it exists its returns the stored object, else it creates a new object. 
+The "getObject" function loads the object with the given id, if you pass an id as a second paramter. If an object with this id exists, the function returns the stored object, else if it creates a new object. 
 
-> Notice: if there is not object with this id. The new returned object has probably another id as the given id.
+> Notice: If there is not object with this id. The new returned object has probably another id as the given id.
 
 #delete Objects
 ```javascript
@@ -75,7 +75,7 @@ The "getObject" function loads the object, if you pass an id as a second paramte
 	//delete object
 	Storage.deleteObject(object);
 	
-	//delete an array of object
+	//delete an array of objects
 	Storage.deleteObjects([object2,object3]);
 	
 	//delete all objects of a type
@@ -84,7 +84,7 @@ The "getObject" function loads the object, if you pass an id as a second paramte
 
 # relate objects
 
-Storage.js allows you to relate every object with every other. So you can create 1:n and n:m relations. Before you can relate objects. Both object must be saved first, but only one time.
+Storage.js allows you to relate every object with every other. So you can create 1:1, 1:n and n:m relations. Before you can relate objects. Both object must be saved first, but only one time.
 
 ```javascript
 	var book = Storage.getObject("book",0);
@@ -93,7 +93,7 @@ Storage.js allows you to relate every object with every other. So you can create
 	var author = Storage.getObject("author");
 	
 	//must be saved once, before you can relate
-	Storage.storeObjects([node,childnode,childnode2]);
+	Storage.storeObjects([book,page,page2,author]);
 	
 	//then relate
 	Storage.relateObjects(book,page);
