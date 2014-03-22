@@ -1,25 +1,23 @@
 Storage.js
 ==========
 
-Storage.js is a small Class that enables you to store objects in the browsers locale storage and create Relations from object to each other. So you can create 1:1, 1:n and n:m relations.
+Storage.js is a small Class that enables you to store objects in the browsers locale storage or create relations from object to each other object. So you can create 1:1, 1:n and n:m relations. It has no dependencies to other frameworks.
 
 # Why I created this
 
 If you create a webapplication that is using a lot of datas, sometime its good to save data locally. But WebSql Database and IndexedDB  are not realy good supported in different browsers.
-The best support has the [webstorage see this Link](http://www.html5rocks.com/de/features/storage). So I decided to create a small framework were I can relate objects , and save Images (and files in the near future). It's human readable and easy to understand. You can compress it to 2kb size.
+The best support has the [webstorage see this Link](http://www.html5rocks.com/de/features/storage). So I decided to create a small framework were I can relate objects , and save images (and files in the near future). The code is human readable and easy to understand. You can compress it to 2kb size.
 
-Storage.js has no search or query function. Javascript is fast, so you can load all objects quickly and iterate them by Javascript. Should'nt be a problem.  However, I plan to implement a small "Where" query function, but it is not ready yet.
+Storage.js has a small search function (based on eval), but i recommend to use Javascript. You can load all objects quickly and iterate them by Javascript. Should'nt be a problem.
 
-# when should I use it
+# When should I use it
 
-I recommend to use Storage.js only if you realy want to store something, not if you just want to do something with objects. It doesn't make any sense to reload all objects each time, if you already have all objects.
+I recommend to use Storage.js only if you realy want to store something, not if you just want to do something with objects. It doesn't make any sense to reload all objects each time, if you already have loaded all objects.
 Just store the changes. And only load all objects if it is neccessary.
-To save a bunch of "your" objects use "storeObjectsAs".
-
 
 #  Start with an object
 
-To work with Storage.js it is neccessary to allocate an object first!
+To work with Storage.js it is neccessary to allocate an object first! But you also can use "storeObjectsAs" to save your allready existing objects, see further down.
 
 ```javascript
 	var object = Storage.getObject("nameOfYourBean");
@@ -221,7 +219,7 @@ it is a bit tricky, an for android you need to save it on the second way
 	
 ```
 
-this should work on every browser
+This should work on every browser
 
 #  Search after an object
 
@@ -242,7 +240,7 @@ Also you have to use the keyword "object" to acces an attribute. You also have t
         searchnode3.noname="i have no name";
 		Storage.storeObjects([searchnode,searchnode1,searchnode2,searchnode3]);
 		
-		//the eval Query return true, if the name of the object is karl.
+		//if eval query returns true, it will added to the results
 		var res = Storage.findWhere("search","object.name=='karl'");
         alert("I found "+res.length+" results that match karl" );
 		
