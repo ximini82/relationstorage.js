@@ -23,7 +23,7 @@ var Storage =  function () {
 				}	
 			}
 		return 	alreadyExists;
-	}
+	};
     
     var getRelatedClassesFromBean  = function (obj)
     {
@@ -208,14 +208,18 @@ var Storage =  function () {
         getAllObjects: function (className)
         {
             var keys = Storage.loadRaw(className+"_keys");
-            var ids  = keys.split(",");
-            var ar = new Array();
-            for (var p =0 ; p<ids.length ; p++){
-                var id = ids[p];
-                var obj =  Storage.getObject(classname,id);
-                ar.push(obj);
+            if(keys)
+            {
+                var ids  = keys.split(",");
+                var ar = new Array();
+                for (var p =0 ; p<ids.length ; p++){
+                    var id = ids[p];
+                    var obj =  Storage.getObject(className,id);
+                    ar.push(obj);
+                }
+                return ar;
             }
-            return ar;
+            return null;
         }
 		,
 
@@ -249,6 +253,19 @@ var Storage =  function () {
                 Storage.storeObject(ar[a]);
             }
         }
+        ,
+        storeObjectsAs:function(ar,className)
+        {
+            
+            for (var a = 0; a < ar.length ; a++)
+            {
+                var o = ar[a];
+                var i = Storage.getObject(className);
+                o.id=i.id;
+                o.class=i.class;
+                Storage.storeObject(o);  
+            }
+        }
         ,	
 
 		deleteObject : function (obj)
@@ -276,14 +293,25 @@ var Storage =  function () {
             }
         }
         ,	
-        deleteAllObjects:function (classname)
+        deleteAllObjects:function (className)
         {
-            var keys = Storage.loadRaw(Classname+"_keys");
-            var ids  = keys.split(",");
-            for (var p =0 ; p<ids.length ; p++){
-            var id = ids[p];
-            var obj =  Storage.getObject(classname,id);
-            Storage.deleteObject(obj);
+            var keys = Storage.loadRaw(className+"_keys");
+            if(keys)
+            {
+            
+                var ids  = keys.split(",");
+                for (var p =0 ; p<ids.length ; p++){
+                    var id = ids[p];
+                    var obj =  Storage.getObject(className,id);
+                    if(obj)
+                    {
+                        Storage.deleteObject(obj);
+                    }
+                    else
+                    {
+                        deleteKeyFromStringObject(className+"_keys",id);
+                    }
+                }
             }
         }
 		,
@@ -408,6 +436,42 @@ var Storage =  function () {
 					Storage.solveRelation(obj1,ar[a]);
 				}
 		}
+    ,
+        
+    findWhere:function(className,where)
+    {
+        /*var ands = where.split('&&');
+       	for (var a = 0 ; a<ands.length;a++)
+        {
+           ands[a] = ands[a].split('||');
+        }
+        */
+        
+        //get all classes
+        var objects = Storage.getAllObjects(className);
+        var results = new Array();
+        for (var a = 0 ; a<objects.length;a++)
+        {
+            var object = objects[a];
+            var istrue = eval(where);
+            if(istrue)
+                results.push(object);
+          /*  for (var an = 0 ; an<ands.length;an++)
+            {
+                var andd = ands[an];
+                  for (var o = 0 ; o<andd.length;o++)
+                  {
+                      var ors = andd[o];
+                      
+                      var x = 10;
+var y = 20;
+var a = eval("x < y ? 0 : 10") + "<br>";
+                  }
+            }
+          */
+        }
+        return results;
+    }
     ,
     imgToData:function(elementImage,type,width,height)
     {

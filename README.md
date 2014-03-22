@@ -1,18 +1,23 @@
 Storage.js
 ==========
 
-Storage.js is a small Class that enables you to store objects in the browsers locale storage and create Relations from object to each other. So you can create 1:1 1:n and n:m relations.
+Storage.js is a small Class that enables you to store objects in the browsers locale storage and create Relations from object to each other. So you can create 1:1, 1:n and n:m relations.
 
-# Why?
+# Why I created this
 
 If you create a webapplication that is using a lot of datas, sometime its good to save data locally. But WebSql Database and IndexedDB  are not realy good supported in different browsers.
 The best support has the [webstorage see this Link](http://www.html5rocks.com/de/features/storage). So I decided to create a small framework were I can relate objects , and save Images (and files in the near future). It's human readable and easy to understand. You can compress it to 2kb size.
 
 Storage.js has no search or query function. Javascript is fast, so you can load all objects quickly and iterate them by Javascript. Should'nt be a problem.  However, I plan to implement a small "Where" query function, but it is not ready yet.
 
+# when should I use it
+
+I recommend to use Storage.js only if you realy want to store something, not if you just want to do something with objects. It doesn't make any sense to reload all objects each time, if you already have all objects.
+Just store the changes. And only load all objects if it is neccessary.
+To save a bunch of "your" objects use "storeObjectsAs".
 
 
-#  start with an object
+#  Start with an object
 
 To work with Storage.js it is neccessary to allocate an object first!
 
@@ -27,7 +32,7 @@ This object automatically  has three values:
 
 The id is the the unique key for this object, with this class. The class attribute is a string with the name of the class. In this example "nameOfYourBean"
 
-# add something
+# Add something
 
 Then you can add attributes and store the object again.
 
@@ -37,7 +42,7 @@ Then you can add attributes and store the object again.
 	object.andAnother =123;
 ```
 
-# store object
+# Store object
 
 just : 
 ```javascript
@@ -49,7 +54,19 @@ just :
 	Storage.storeObjects([a,b]);
 ```
 
-# how to load an object? easy ;)
+## Store your allready existing objects
+if you allreay have a object, and you can't allocate them, use "storeObjectsAs". The object will be stored automatically and every object gets the id and the classtype.
+
+```javascript
+	//object which allready exists
+	var firstOne = {name:"blub"};
+	var secondOne = {name:"blub"};
+	Storage.storeObjectsAs([firstOne,secondOne],"miscStuff");
+```
+> Notice: Make sure your object has no id or class attribute!
+
+
+# How to load an object
 you already know this function. You only need the id of the object
 
 ```javascript
@@ -67,7 +84,7 @@ The "getObject" function loads the object with the given id, if you pass an id a
 
 > Notice: If there is not object with this id. The new returned object has probably another id as the given id.
 
-#delete Objects
+# Delete objects
 ```javascript
 
     var object = Storage.getObject("sample");
@@ -82,7 +99,7 @@ The "getObject" function loads the object with the given id, if you pass an id a
 	Storage.deleteAllObjects("sample");
 ```
 
-# relate objects
+# Relate objects
 
 Storage.js allows you to relate every object with every other. So you can create 1:1, 1:n and n:m relations. Before you can relate objects. Both object must be saved first, but only one time.
 
@@ -102,7 +119,7 @@ Storage.js allows you to relate every object with every other. So you can create
 	
 ```
 
-# get related objects
+# Get related objects
 
 getRelatedObjects will return an array with all objects from a type which were related to this object
 
@@ -117,7 +134,7 @@ getRelatedObjects will return an array with all objects from a type which were r
 	
 ```
 
-# solve objectrelations
+# Solve objectrelations
 
 if you want to remove an relation between two objects, for example you want to remove a page just call :
 
@@ -134,7 +151,7 @@ if you want to remove an relation between two objects, for example you want to r
 
 > Notice: You don't have to take care of relation, if you want to delete an object. Storage.js removes all relations automatically
 
-# save an image as object
+# Save an image as object
 
 you can save an Image from your dom
 
@@ -144,7 +161,7 @@ you can save an Image from your dom
 ```
 it is a bit tricky, an for android you need to save it on the second way
 
-## the first way (works on most browsers, but not on android shipped browser)
+## The first way (works on most browsers, but not on android shipped browser)
 ```javascript
 
 	//at the beginning grab the img 
@@ -172,7 +189,7 @@ it is a bit tricky, an for android you need to save it on the second way
 > Notice: this works for png's if you want to save jpg's use this Storage.imgToData(img,'image/jpg');
 
 
-##the second way, works also on android
+## The second way, works also on android
 
 ```javascript
 
@@ -206,11 +223,36 @@ it is a bit tricky, an for android you need to save it on the second way
 
 this should work on every browser
 
+#  Search after an object
+
+> Notice: the performance of the search function is not realy fast, because for each search, it loads all object and call the eval function. I recommend to load the objects and handle search by yourself.
+
+You can search after a specific object from a type using the "findWhere" function. That function use the Javascript eval function. So be carefull. Your query have to return false or true. 
+Also you have to use the keyword "object" to acces an attribute. You also have to set values in quotes. See example:
+```javascript
+
+		//create some objects
+	    var searchnode = Storage.getObject("search",0);
+        searchnode.name="hanz";
+        var searchnode1 = Storage.getObject("search",1);
+        searchnode1.name="karl";
+        var searchnode2 = Storage.getObject("search",2);
+        searchnode2.name="ars";
+		 var searchnode3 = Storage.getObject("search",3);
+        searchnode3.noname="i have no name";
+		Storage.storeObjects([searchnode,searchnode1,searchnode2,searchnode3]);
+		
+		//the eval Query return true, if the name of the object is karl.
+		var res = Storage.findWhere("search","object.name=='karl'");
+        alert("I found "+res.length+" results that match karl" );
+		
+```
+
 # future plans
 
 1. file functions
 2. better integration of image and file loading / saving
-3. small search functions, (LIKE / WHERE key=)
+
 
 if you have a good idea let me know ;)
 
