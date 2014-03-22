@@ -8,7 +8,7 @@ Storage.js is a small Class that enables you to store objects in the browsers lo
 If you create a webapplication that is using a lot of datas, sometime its good to save data locally. But WebSql Database and IndexedDB  are not realy good supported in different browsers.
 The best support has the [webstorage see this Link](http://www.html5rocks.com/de/features/storage). So I decided to create a small framework were I can relate objects , and save Images (and files in the near future). It's human readable and easy to understand. You can compress it to 2kb size.
 
-Storage.js has no search or query function. Javascript is fast, however you can load all object quickly and iterate them by Javascript. Should'nt be a problem.  However, I plan to implement a small "Where" query function, but it is not ready yet.
+Storage.js has no search or query function. Javascript is fast, so you can load all objects quickly and iterate them by Javascript. Should'nt be a problem.  However, I plan to implement a small "Where" query function, but it is not ready yet.
 
 
 
@@ -19,11 +19,11 @@ To work with Storage.js it is neccessary to allocate an object first!
 ```javascript
 	var object = Storage.getObject("nameOfYourBean");
 ```
-This object automatically  has two values:
+This object automatically  has three values:
 
 1. id
 2. class
-3. exists (is true, if it was loaded object)
+3. exists (is true, if it is loaded/saved object)
 
 The id is the the unique key for this object, with this class. The class attribute is a string with the name of the class. In this example "nameOfYourBean"
 
@@ -109,16 +109,15 @@ getRelatedObjects will return an array with all objects from a type which were r
 ```javascript
 
 	//to get all related objects of a type "page"
-	var ar = Storage.getRelatedObjects(book,"page"); // returns the two page from the example above
+	var ar = Storage.getRelatedObjects(book,"page"); // returns the two pages from the example above
 	var page = ar[0];
-	
 	
 	//return the first related object of the type
 	var page = Storage.getRelatedObject(book,"page");
 	
 ```
 
-# get solve objectrelations
+# solve objectrelations
 
 if you want to remove an relation between two objects, for example you want to remove a page just call :
 
@@ -127,12 +126,14 @@ if you want to remove an relation between two objects, for example you want to r
 	//remove a relation
 	Storage.solveRelation(book,page); 
 	
-	
 	//or remove all relations from a type
 	Storage.solveRelations(book,"page"); 
 	//this book has no pages anymore
 
 ```
+
+> Notice: You don't have to take care of relation, if you want to delete an object. Storage.js removes all relations automatically
+
 # save an image as object
 
 you can save an Image from your dom
@@ -141,7 +142,6 @@ you can save an Image from your dom
 <img id="googleIcon" alt="The Scream" width="220" height="277" style="border:1px solid #d3d3d3;" src="https://www.google.de/images/srpr/logo11w.png">
 <img id="emptyimage" alt="The Scream" width="220" height="277" style="border:1px solid #d3d3d3;" >
 ```
-
 it is a bit tricky, an for android you need to save it on the second way
 
 ## the first way (works on most browsers, but not on android shipped browser)
@@ -150,9 +150,6 @@ it is a bit tricky, an for android you need to save it on the second way
 	//at the beginning grab the img 
 	var img=document.getElementById("googleIcon");
 
-
-	
-	
 	//save the data of an image as an attribute of an object
 	var myImage = Storage.getObject("myimages"); 
 	myImage.description = "googles icon";
@@ -182,18 +179,17 @@ it is a bit tricky, an for android you need to save it on the second way
 	//at the beginning grab the img 
 	var img=document.getElementById("googleIcon");
 	
-	//save the data of an image as an attribute of an object
+	//create an object, to store a reference to the image
 	var myImage = Storage.getObject("myimages"); 
 	myImage.description = "googles icon";
 	
 	//instead of saving the imagedata directly in the object we save the image as rawdata
-	var  imageData= Storage.imgToData(img);
+	var imageData= Storage.imgToData(img);
 	var imgRef = myImage.class+"_"+myImage.id+"_image";
 	Storage.saveRaw(imgRef,imageData);
 	
 	//we save the refence in the object
 	myImage.ref = imgRef;
-	
 	Storage.storeObject(myImage);
 	
 	//now load the stored object
@@ -212,16 +208,15 @@ this should work on every browser
 
 # future plans
 
-1. save files
+1. file functions
 2. better integration of image and file loading / saving
-3. small search functionalyties, (LIKE / WHERE key=)
+3. small search functions, (LIKE / WHERE key=)
 
 if you have a good idea let me know ;)
 
 
 License
 ==========
-Storage.js
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
 <img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/80x15.png" />
 </a><br /><span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">Storage.js</span> by 
