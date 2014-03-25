@@ -1,23 +1,23 @@
-Storage.js
+Relationstorage.js
 ==========
 
-Storage.js is a small Class that enables you to store objects in the browsers locale storage or create relations from object to each other object. So you can create 1:1, 1:n and n:m relations. It has no dependencies to other frameworks.
+Relationstorage.js is a small Class that enables you to store objects in the browsers locale storage or create relations from object to each other object. So you can create 1:1, 1:n and n:m relations. It has no dependencies to other frameworks.
 
 # Why I created this
 
 If you create a webapplication that is using a lot of datas, sometime its good to save data locally. But WebSql Database and IndexedDB  are not realy good supported in different browsers.
 The best support has the [webstorage see this Link](http://www.html5rocks.com/de/features/storage). So I decided to create a small framework were I can relate objects , and save images (and files in the near future). The code is human readable and easy to understand. You can compress it to 2kb size.
 
-Storage.js has a small search function (based on eval), but i recommend to use Javascript. You can load all objects quickly and iterate them by Javascript. Should'nt be a problem.
+Relationstorage.js has a small search function (based on eval), but i recommend to use Javascript. You can load all objects quickly and iterate them by Javascript. Should'nt be a problem.
 
 # When should I use it
 
-I recommend to use Storage.js only if you realy want to store something, not if you just want to do something with objects. It doesn't make any sense to reload all objects each time, if you already have loaded all objects.
+I recommend to use Relationstorage.js only if you realy want to store something, not if you just want to do something with objects. It doesn't make any sense to reload all objects each time, if you already have loaded all objects.
 Just store the changes. And only load all objects if it is neccessary.
 
 #  Start with an object
 
-To work with Storage.js it is neccessary to allocate an object first with "getObject". You need to define an type of the object. For example "Bean". But you also can use "storeObjectsAs" to save your already existing objects, see further down.
+To work with Relationstorage.js it is neccessary to allocate an object first with "getObject". You need to define an type of the object. For example "Bean". But you also can use "storeObjectsAs" to save your already existing objects, see further down.
 
 ```javascript
 	var object = Storage.getObject("Bean");
@@ -25,14 +25,14 @@ To work with Storage.js it is neccessary to allocate an object first with "getOb
 This object automatically  has three values:
 
 1. id
-2. class
+2. type
 3. exists (is true, if it is loaded/saved object)
 
-The id is the the unique key for this object, with this class. The class attribute is a string with the name of the class. In this example "Bean"
+The id is the the unique key for this object, with this type. The type attribute is a string with the name of the object. In this example "Bean"
 
 ### Add something
 
-You can add attributes and store the object again.
+You can add attributes and store the object again. It's possible to add different attributes to objects with the same type.
 
 ```javascript
 	var object = Storage.getObject("Bean");
@@ -42,7 +42,7 @@ You can add attributes and store the object again.
 
 # Store object
 
-just : 
+Just, call the storeObject function. 
 ```javascript
 	Storage.storeObject(object);
 	
@@ -53,7 +53,7 @@ just :
 ```
 
 ## Store your already existing objects
-if you already have objects, and you can't allocate them, use "storeObjectsAs". The objects will be stored automatically and every object gets the id and the classtype.
+If you already have objects, and you can't allocate them, use "storeObjectsAs". The objects will be stored automatically and every object gets the id and the classtype.
 
 ```javascript
 	//object which already exists
@@ -78,7 +78,7 @@ you already know this function. You only need the id of the object
 	var ar = Storage.getAllObjects("Bean");
 ```
 
-The "getObject" function loads the object with the given id, if you pass an id as a second paramter. If an object with this id exists, the function returns the stored object, else if it creates a new object. 
+The "getObject" function loads the object with the given id, that you passed as second paramter. If an object with this id exists, the function returns the stored object, else if it creates a new object, with an ID 
 
 > Notice: If there is no object with this id, the new returned object has probably another id as the given id.
 
